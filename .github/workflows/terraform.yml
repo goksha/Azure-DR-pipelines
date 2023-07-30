@@ -1,4 +1,4 @@
-name: "Azure CLI"
+name: "Terraform Azure Create"
 
 on:
   workflow_dispatch:
