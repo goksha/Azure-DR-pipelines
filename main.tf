@@ -12,11 +12,11 @@ provider "azurerm" {
 }
 
 
-resource "azurerm_kubernetes_cluster" "aks_cluster" {
-  name                = "my-aks-cluster"
+resource "azurerm_kubernetes_cluster" "aks_cluster_primary" {
+  name                = "my-aks-cluster-primary"
   location            = "East US"
   resource_group_name = "my-aks-cluster-rg"
-  dns_prefix          = "myakscluster"  # Change this to your desired DNS prefix for the AKS cluster
+  dns_prefix          = "myaksclusterprimary"  # Change this to your desired DNS prefix for the AKS cluster
 
   default_node_pool {
     name       = "default"
