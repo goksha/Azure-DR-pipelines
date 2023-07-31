@@ -53,6 +53,7 @@ jobs:
           sleep 10
           ./velero get backup-locations
           ./velero restore create --include-namespaces wordpress --from-backup fs-backup
+          sleep 5
             # Output file to save timing information
             OUTPUT_FILE="timing_output.txt"
             # Function to print timestamp and formatted duration
@@ -61,7 +62,7 @@ jobs:
               local seconds=$(( $1 % 60 ))
               printf "%02d minutes %02d seconds\n" "$minutes" "$seconds" >> "$GITHUB_WORKSPACE/$OUTPUT_FILE"
             }
-                        # Start timing
+            # Start timing
             start_time=$(date +%s)
 
             # Wait for all resources in the namespace to be ready
