@@ -53,10 +53,6 @@ jobs:
           ./velero restore create --include-namespaces wordpress --from-backup fs-backup
             # Output file to save timing information
             OUTPUT_FILE="timing_output.txt"
-
-            # Set the working directory
-            cd velero-v1.10.2-linux-amd64
-
             # Function to print timestamp and formatted duration
             function print_timing {
               local minutes=$(( $1 / 60 ))
