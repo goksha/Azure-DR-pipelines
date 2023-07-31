@@ -49,7 +49,6 @@ jobs:
           ./kubectl create -f storage-class-gcp.yml
           set -e
           ./kubectl wait --for=condition=available deployment.apps/velero -n velero --timeout=300s
-          ./kubectl wait --for=condition=available daemonset.apps/node-agent -n velero --timeout=300s
           echo "Velero installation is completed. Proceeding with restoration."
           ./velero get backup-locations
           ./velero restore create --include-namespaces wordpress --from-backup fs-backup
