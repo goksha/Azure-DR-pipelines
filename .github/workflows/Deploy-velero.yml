@@ -43,4 +43,5 @@ jobs:
             kind: Managed
             cachingmode: ReadOnly
           EOF
+          chmod +x kubectl
           ./kubectl create -f storage-class-gcp.yml
