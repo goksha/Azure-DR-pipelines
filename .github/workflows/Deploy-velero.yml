@@ -51,3 +51,29 @@ jobs:
           ./kubectl wait --for=condition=available deployment/velero -n velero --timeout=300s
           echo "Velero installation is completed. Proceeding with restoration."
           ./velero restore create --include-namespaces wordpress --from-backup fs-backup
+          Output file to save timing information
+          OUTPUT_FILE="timing_output.txt"
+          
+          # Function to print timestamp and duration
+          function print_timing {
+            echo "$(date '+%Y-%m-%d %H:%M:%S') $1: $2 seconds" >> "$OUTPUT_FILE"
+          }
+          # Start timing
+          start_time=$(date +%s)
+
+          # Wait for all resources in the namespace to be ready
+          time ./kubectl wait --for=condition=available all -n wordpress --timeout=600s 2>&1 | tee -a "$OUTPUT_FILE"
+
+          # Calculate duration
+          end_time=$(date +%s)
+          duration=$((end_time - start_time))
+
+          # Print total duration
+          print_timing "Total Duration" "$duration"
+                
+    - name: Upload timing_output.txt as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+          name: timing_output
+          path: timing_output.txt
+          
