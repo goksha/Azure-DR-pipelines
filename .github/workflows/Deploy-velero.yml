@@ -30,7 +30,7 @@ jobs:
           tar -zxvf velero-v1.10.2-linux-amd64.tar.gz
           cd velero-v1.10.2-linux-amd64
           echo "${{ secrets.GCP_CREDENTIALS }}" > credentials-velero.json
-          cat credentials-velero
+          cat credentials-velero.json
           ./velero install --plugins velero/velero-plugin-for-gcp:v1.6.0,velero/velero-plugin-for-csi:v0.4.2,velero/velero-plugin-for-microsoft-azure:v1.6.0 --use-node-agent --features=enableCSI --provider gcp --uploader-type restic --bucket 'shagok-velero-backup' --secret-file ./credentials-velero.json --use-volume-snapshots=false
           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           cat << EOF > storage-class-gcp.yml
