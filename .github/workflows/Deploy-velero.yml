@@ -50,6 +50,7 @@ jobs:
           set -e
           ./kubectl wait --for=condition=available deployment.apps/velero -n velero --timeout=300s
           echo "Velero installation is completed. Proceeding with restoration."
+          sleep 10
           ./velero get backup-locations
           ./velero restore create --include-namespaces wordpress --from-backup fs-backup
             # Output file to save timing information
