@@ -61,7 +61,7 @@ jobs:
           start_time=$(date +%s)
 
           # Wait for all resources in the namespace to be ready
-          time ./kubectl wait --for=condition=available all -n wordpress --timeout=600s 2>&1 | tee -a "$OUTPUT_FILE"
+          time ./kubectl wait --for=condition=available all -n wordpress --timeout=600s 2>&1 | tee -a "../$OUTPUT_FILE"
 
           # Calculate duration
           end_time=$(date +%s)
