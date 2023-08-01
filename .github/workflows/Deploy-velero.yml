@@ -48,12 +48,12 @@ jobs:
           set +e
           ./kubectl create -f storage-class-gcp.yml
           set -e
-          ./kubectl wait --for=condition=available deployment.apps/velero -n velero --timeout=300s
+          ./kubectl wait pods --all --namespace=velero --for=condition=Ready --timeout=300s
           echo "Velero installation is completed. Proceeding with restoration."
-          sleep 10
+          #sleep 10
           ./velero get backup-locations
           ./velero restore create --include-namespaces wordpress --from-backup fs-backup
-          sleep 5
+          sleep 3
             # Output file to save timing information
             OUTPUT_FILE="timing_output.txt"
             # Function to print timestamp and formatted duration
