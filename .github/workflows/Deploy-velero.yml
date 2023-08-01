@@ -54,26 +54,34 @@ jobs:
           ./velero get backup-locations
           ./velero restore create --include-namespaces wordpress --from-backup fs-backup
           sleep 3
-            # Output file to save timing information
-            OUTPUT_FILE="timing_output.txt"
-            # Function to print timestamp and formatted duration
-            function print_timing {
-              local minutes=$(( $1 / 60 ))
-              local seconds=$(( $1 % 60 ))
-              printf "%02d minutes %02d seconds\n" "$minutes" "$seconds" >> "$GITHUB_WORKSPACE/$OUTPUT_FILE"
-            }
-            # Start timing
-            start_time=$(date +%s)
+          # Output file to save timing information
+          OUTPUT_FILE="timing_output.txt"
 
-            # Wait for all resources in the namespace to be ready
-            time ./kubectl wait pods --all --namespace=wordpress --for=condition=Ready --timeout=300s 2>&1 | tee -a "$GITHUB_WORKSPACE/$OUTPUT_FILE"
 
-            # Calculate duration
-            end_time=$(date +%s)
-            duration=$((end_time - start_time))
+          print_timing() {
+            local minutes=$(( $1 / 60 ))
+            local seconds=$(( $1 % 60 ))
+            printf "Loop %02d: %02d minutes %02d seconds\n" "$i" "$minutes" "$seconds" >> "$GITHUB_WORKSPACE/$OUTPUT_FILE"
+          }
 
-            # Print total duration
-            print_timing "$duration"
+          # Loop 20 times
+          for ((i = 1; i <= 20; i++)); do
+            echo "Running loop $i"
+          # Start timing
+          start_time=$(date +%s)
+          # Wait for all resources in the namespace to be ready
+          time ./kubectl wait --for=condition=available deployment.apps/my-release-wordpress -n wordpress --timeout=300s 2>&1 | tee -a "$GITHUB_WORKSPACE/$OUTPUT_FILE"
+          # Calculate duration
+          end_time=$(date +%s)
+          duration=$((end_time - start_time))
+          #clear the cluster for next iteration
+          ./kubectl delete ns wordpress
+          ./kubectl wait namespace wordpress --for=delete
+          # Print total duration with iteration number
+          print_timing "$duration"
+          echo "Loop $i completed."
+          done
+
                 
     - name: Upload timing_output.txt as an artifact
       uses: actions/upload-artifact@v2
