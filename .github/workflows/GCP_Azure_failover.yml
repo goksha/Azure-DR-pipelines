@@ -136,7 +136,7 @@ jobs:
         TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         REPO_OWNER: goksha
         REPO_NAME: test-Azure-cli
-        WORKFLOW_NAME: GCP_to_Azure_Failover
+        WORKFLOW_NAME: GCP_Azure_failover.yml
       run: |
          curl -X POST -H "Authorization: Bearer $TOKEN" \
          -H "Accept: application/vnd.github.v3+json" \
