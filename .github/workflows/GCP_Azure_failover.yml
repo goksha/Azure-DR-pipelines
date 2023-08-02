@@ -1,4 +1,4 @@
-name: "GCP_to_Azure_Failover"
+name: "GCP_to_Azure_Failover_datacollection"
 
 on:
   workflow_dispatch:
