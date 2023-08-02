@@ -1,4 +1,4 @@
-name: "Terraform Azure Create"
+name: "GCP_to_Azure_Failover"
 
 on:
   workflow_dispatch:
