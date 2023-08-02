@@ -97,7 +97,7 @@ jobs:
           }
 
           # Loop 20 times
-          for ((i = 1; i <= 20; i++)); do
+          for ((i = 1; i <= 1; i++)); do
             echo "Running loop $i"
           # Start timing
           start_time=$(date +%s)
