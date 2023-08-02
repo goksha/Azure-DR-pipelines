@@ -109,10 +109,6 @@ jobs:
           # Calculate duration
           end_time=$(date +%s)
           duration=$((end_time - start_time))
-          #clear the cluster for next iteration
-          ./kubectl delete ns wordpress
-          ./kubectl wait namespace wordpress --for=delete
-          # Print total duration with iteration number
           print_timing "$duration"
           echo "Loop $i completed."
           done
