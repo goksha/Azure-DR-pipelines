@@ -133,7 +133,7 @@ jobs:
     
     - name: Trigger Next Iteration
       env:
-        TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
+        TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         REPO_OWNER: goksha
         REPO_NAME: test-Azure-cli
         WORKFLOW_NAME: GCP_to_Azure_Failover
