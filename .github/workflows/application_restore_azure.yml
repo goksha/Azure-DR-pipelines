@@ -68,12 +68,12 @@ jobs:
           }
 
           # Loop 20 times
-          for ((i = 1; i <= 20; i++)); do
+          for ((i = 1; i <= 1; i++)); do
             echo "Running loop $i"
           # Start timing
           start_time=$(date +%s)
           ./velero get backup-locations
-          ./velero restore create --include-namespaces wordpress --from-backup fs-backup
+          ./velero restore create --include-namespaces wordpress --from-backup azure-backup
           sleep 2
           # Wait for all resources in the namespace to be ready
           time ./kubectl wait pods --all --namespace=wordpress --for=condition=Ready --timeout=300s 2>&1 | tee -a "$GITHUB_WORKSPACE/$OUTPUT_FILE"
@@ -81,8 +81,8 @@ jobs:
           end_time=$(date +%s)
           duration=$((end_time - start_time))
           #clear the cluster for next iteration
-          ./kubectl delete ns wordpress
-          ./kubectl wait namespace wordpress --for=delete
+          #./kubectl delete ns wordpress
+          #./kubectl wait namespace wordpress --for=delete
           # Print total duration with iteration number
           print_timing "$duration"
           echo "Loop $i completed."
