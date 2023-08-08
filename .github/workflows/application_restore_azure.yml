@@ -1,4 +1,4 @@
-name: "Deploy velero"
+name: "Same cluster restore scenario 1"
 
 on:
   workflow_dispatch:
