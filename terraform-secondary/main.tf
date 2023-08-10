@@ -11,10 +11,6 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "secondary" {
-  name     = "my-aks-cluster-rg-secondary"
-  location = "West US"
-}
 
 resource "azurerm_kubernetes_cluster" "aks_cluster_secondary" {
   name                = "my-aks-cluster-secondary"
@@ -27,7 +23,6 @@ resource "azurerm_kubernetes_cluster" "aks_cluster_secondary" {
     node_count = 2
     vm_size    = "Standard_D2_v2"  # Change this to the desired VM size for the default node pool
   }
-  depends_on = [azurerm_resource_group.secondary] 
   identity {
     type = "SystemAssigned"
   }
