@@ -61,7 +61,7 @@ jobs:
       with:
         azcliversion: 2.30.0
         inlineScript: |
-          az aks get-credentials --resource-group my-aks-cluster-rg --name my-aks-cluster-primary
+          az aks get-credentials --resource-group my-aks-cluster-rg-secondary --name my-aks-cluster-secondary
           wget https://github.com/vmware-tanzu/velero/releases/download/v1.10.2/velero-v1.10.2-linux-amd64.tar.gz
           tar -zxvf velero-v1.10.2-linux-amd64.tar.gz
           cd velero-v1.10.2-linux-amd64
