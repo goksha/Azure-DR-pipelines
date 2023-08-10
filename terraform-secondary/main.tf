@@ -38,7 +38,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster_secondary" {
 }
 
 output "client_certificate" {
-  value     = azurerm_kubernetes_cluster.aks_cluster_primary.kube_config.0.client_certificate
+  value     = azurerm_kubernetes_cluster.aks_cluster_secondary.kube_config.0.client_certificate
   sensitive = true
 }
 
