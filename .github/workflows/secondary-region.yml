@@ -13,7 +13,7 @@ jobs:
     defaults:
       run:
         shell: bash
-      working-directory: ./terraform-secondary
+        working-directory: ./terraform-secondary
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -65,9 +65,15 @@ jobs:
           wget https://github.com/vmware-tanzu/velero/releases/download/v1.10.2/velero-v1.10.2-linux-amd64.tar.gz
           tar -zxvf velero-v1.10.2-linux-amd64.tar.gz
           cd velero-v1.10.2-linux-amd64
-          echo '${{secrets.GCP_CREDENTIALS}}' > credentials-velero
-          cat credentials-velero
-          ./velero install --plugins velero/velero-plugin-for-gcp:v1.6.0,velero/velero-plugin-for-csi:v0.4.2,velero/velero-plugin-for-microsoft-azure:v1.6.0 --use-node-agent --features=enableCSI --provider gcp --uploader-type restic --bucket 'shagok-velero-backup' --secret-file ./credentials-velero --use-volume-snapshots=false
+          cat << EOF > ./credentials-velero
+          AZURE_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTION_ID}}
+          AZURE_TENANT_ID=${{secrets.AZURE_TENANT_ID}}
+          AZURE_CLIENT_ID=${{secrets.AZURE_CLIENT_ID}}
+          AZURE_CLIENT_SECRET=${{secrets.AZURE_CLIENT_SECRET}}
+          AZURE_RESOURCE_GROUP=my-aks-cluster-rg
+          AZURE_CLOUD_NAME=AzurePublicCloud
+          EOF
+          ./velero install --plugins velero/velero-plugin-for-gcp:v1.6.0,velero/velero-plugin-for-csi:v0.4.2,velero/velero-plugin-for-microsoft-azure:v1.6.0 --use-node-agent --features=enableCSI --provider azure --uploader-type restic --bucket 'velerobackup' --backup-location-config resourceGroup=my-aks-cluster-rg,storageAccount=velerobackupshagok  --secret-file ./credentials-velero --use-volume-snapshots=false
           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           cat << EOF > storage-class-gcp.yml
           apiVersion: storage.k8s.io/v1
@@ -120,22 +126,3 @@ jobs:
           name: timing_output
           path: timing_output.txt
     
-    - name: Terraform Destroy
-      env:
-        ARM_CLIENT_ID : ${{ secrets.ARM_CLIENT_ID }}
-        ARM_TENANT_ID : ${{ secrets.ARM_TENANT_ID }}
-        ARM_SUBSCRIPTION_ID : ${{ secrets.ARM_SUBSCRIPTION_ID }}
-        ARM_CLIENT_SECRET : ${{ secrets.ARM_CLIENT_SECRET }}      
-      run: terraform destroy -auto-approve
-    
-    - name: Trigger Next Iteration
-      env:
-        TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-        REPO_OWNER: goksha
-        REPO_NAME: test-Azure-cli
-        WORKFLOW_NAME: GCP_Azure_failover.yml
-      run: |
-         curl -X POST -H "Authorization: Bearer $TOKEN" \
-         -H "Accept: application/vnd.github.v3+json" \
-         https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/workflows/$WORKFLOW_NAME/dispatches \
-         -d '{"ref":"main"}'
