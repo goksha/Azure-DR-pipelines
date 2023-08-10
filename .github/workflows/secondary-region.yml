@@ -109,7 +109,7 @@ jobs:
           # Start timing
           start_time=$(date +%s)
           ./velero get backup-locations
-          ./velero restore create --include-namespaces wordpress --from-backup fs-backup
+          ./velero restore create --include-namespaces wordpress --from-backup azure-backup
           sleep 2
           # Wait for all resources in the namespace to be ready
           time ./kubectl wait pods --all --namespace=wordpress --for=condition=Ready --timeout=300s 2>&1 | tee -a "$GITHUB_WORKSPACE/$OUTPUT_FILE"
