@@ -1,7 +1,7 @@
 terraform {
   backend "azurerm" {
     resource_group_name  = "my-aks-cluster-rg"
-    storage_account_name = "terraformstateshagok"
+    storage_account_name = "shagokterraformstate"
     container_name       = "terraformstate"
     key                  = "secondary.terraform.tfstate"
   }
