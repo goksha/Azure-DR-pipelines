@@ -73,7 +73,7 @@ jobs:
           AZURE_RESOURCE_GROUP=my-aks-cluster-rg
           AZURE_CLOUD_NAME=AzurePublicCloud
           EOF
-          ./velero install --plugins velero/velero-plugin-for-gcp:v1.6.0,velero/velero-plugin-for-csi:v0.4.2,velero/velero-plugin-for-microsoft-azure:v1.6.0 --use-node-agent --features=enableCSI --provider azure --uploader-type restic --bucket 'velerobackup' --backup-location-config resourceGroup=my-aks-cluster-rg,storageAccount=velerobackupshagok  --secret-file ./credentials-velero --use-volume-snapshots=false
+          ./velero install --plugins velero/velero-plugin-for-gcp:v1.6.0,velero/velero-plugin-for-csi:v0.4.2,velero/velero-plugin-for-microsoft-azure:v1.6.0 --use-node-agent --features=enableCSI --provider azure --uploader-type restic --bucket 'velerobackup' --backup-location-config resourceGroup=my-aks-cluster-rg,storageAccount=shagokvelerobackup  --secret-file ./credentials-velero --use-volume-snapshots=false
           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           cat << EOF > storage-class-gcp.yml
           apiVersion: storage.k8s.io/v1
